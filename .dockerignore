@@ -1,0 +1,8 @@
+**
+!requirements.txt
+!src/
+!src/*.py
+src/__pycache__/
+!models/
+!models/modelo.joblib
+!Dockerfile

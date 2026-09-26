@@ -145,5 +145,5 @@
       29
     ]
   ],
-  "serialized_model": "Reentrenado con todas las ventanas válidas después de evaluar."
+  "serialized_model": "Ajustado exclusivamente con entrenamiento; test solo para evaluación."
 }

@@ -1,4 +1,4 @@
-"""Ejecutar desde la raíz: python -m src.train --exclude-invalid-windows."""
+"""Ejecutar desde la raíz: python train.py --exclude-invalid-windows."""
 
 import argparse
 import hashlib
@@ -17,7 +17,7 @@ from sklearn.pipeline import Pipeline
 from src.features import WindowFeatures, make_windows
 from src.schema import ESTADOS, validate_episodes, validate_telemetry
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parent
 
 
 def main():
@@ -63,13 +63,18 @@ def main():
     )
     train_idx = np.flatnonzero(np.isin(groups, train_ids))
     test_idx = np.flatnonzero(np.isin(groups, test_ids))
+    if set(train_ids) & set(test_ids) or np.intersect1d(train_idx, test_idx).size:
+        raise ValueError("Entrenamiento y test deben ser disjuntos por episodio y ventana.")
+    train_windows = [windows[i] for i in train_idx]
+    test_windows = [windows[i] for i in test_idx]
     pipeline = Pipeline([
         ("features", WindowFeatures()),
         ("classifier", RandomForestClassifier(n_estimators=300, min_samples_leaf=2,
                                                random_state=42, n_jobs=-1)),
     ])
-    pipeline.fit([windows[i] for i in train_idx], labels[train_idx])
-    predicted = pipeline.predict([windows[i] for i in test_idx])
+    # Único ajuste: todos los pasos del pipeline reciben exclusivamente entrenamiento.
+    pipeline.fit(train_windows, labels[train_idx])
+    predicted = pipeline.predict(test_windows)
     report = {
         "dataset_sha256": hashlib.sha256(args.data.read_bytes()).hexdigest(),
         "seed": 42, "window_size": args.window_size,
@@ -81,10 +86,9 @@ def main():
         "classification_report": classification_report(labels[test_idx], predicted, output_dict=True),
         "confusion_matrix_labels": list(ESTADOS),
         "confusion_matrix": confusion_matrix(labels[test_idx], predicted, labels=ESTADOS).tolist(),
-        "serialized_model": "Reentrenado con todas las ventanas válidas después de evaluar.",
+        "serialized_model": "Ajustado exclusivamente con entrenamiento; test solo para evaluación.",
     }
-    # La evaluación anterior usa episodios reservados. El artefacto final aprovecha todos los datos.
-    pipeline.fit(windows, labels)
+    # Guardar exactamente el modelo evaluado, sin volver a ajustar sobre test.
     models = ROOT / "models"
     models.mkdir(exist_ok=True)
     model_path = models / "modelo.joblib"
