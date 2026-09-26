@@ -37,7 +37,7 @@ Al instalar localmente se crea `.venv/`, que contiene el entorno virtual y sus
 dependencias. Python puede crear carpetas `__pycache__/` para almacenar código
 compilado. Ambas se generan en cada equipo y no se incluyen en Git.
 
-## Levantar el proyecto desde una clonación nueva
+## Levantar el proyecto
 
 Los siguientes comandos se ejecutan en PowerShell. Se requiere Git y Docker
 Desktop iniciado, con contenedores Linux y el puerto 8000 disponible. Para
