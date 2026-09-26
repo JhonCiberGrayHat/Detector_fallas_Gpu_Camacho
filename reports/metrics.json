@@ -1,0 +1,149 @@
+{
+  "dataset_sha256": "1f51c16c8ef7c59dd7488f909647ad5899ff45c4bee620f940f036403d7b600e",
+  "seed": 42,
+  "window_size": 30,
+  "original_rows": 14400,
+  "accepted_rows": 14310,
+  "excluded_windows": [
+    {
+      "episodio_id": 36,
+      "ventana": 3
+    },
+    {
+      "episodio_id": 38,
+      "ventana": 8
+    },
+    {
+      "episodio_id": 44,
+      "ventana": 5
+    }
+  ],
+  "total_windows": 477,
+  "train_episodes": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    6,
+    7,
+    8,
+    10,
+    12,
+    13,
+    16,
+    17,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    28,
+    29,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    39,
+    40,
+    41,
+    42,
+    44,
+    45,
+    46
+  ],
+  "test_episodes": [
+    5,
+    9,
+    11,
+    14,
+    15,
+    18,
+    27,
+    30,
+    31,
+    38,
+    43,
+    47
+  ],
+  "train_windows": 358,
+  "test_windows": 119,
+  "accuracy": 1.0,
+  "classification_report": {
+    "degradacion_memoria": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 30.0
+    },
+    "falla_alimentacion": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 29.0
+    },
+    "normal": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 30.0
+    },
+    "sobrecalentamiento": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 30.0
+    },
+    "accuracy": 1.0,
+    "macro avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 119.0
+    },
+    "weighted avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 119.0
+    }
+  },
+  "confusion_matrix_labels": [
+    "normal",
+    "sobrecalentamiento",
+    "degradacion_memoria",
+    "falla_alimentacion"
+  ],
+  "confusion_matrix": [
+    [
+      30,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      30,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      30,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      29
+    ]
+  ],
+  "serialized_model": "Reentrenado con todas las ventanas válidas después de evaluar."
+}
