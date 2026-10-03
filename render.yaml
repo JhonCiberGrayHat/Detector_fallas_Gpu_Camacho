@@ -1,0 +1,9 @@
+# Blueprint de Render: con este archivo en el repo, Render sabe qué desplegar.
+# New > Blueprint > conectas el repo > listo. No hay que configurar nada a mano.
+services:
+  - type: web
+    name: api-sentimiento
+    runtime: docker        # usa nuestro Dockerfile, no el buildpack de Python
+    plan: free             # 512 MB de RAM, 0.1 CPU
+    region: oregon
+    healthCheckPath: /     # Render pega aquí para saber si la app está viva
