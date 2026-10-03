@@ -24,21 +24,21 @@ class PartATests(unittest.TestCase):
         self.episode = self.data[self.data.episodio_id == 0].copy()
 
     def test_contract_rejects_corruption(self):
-        validate_telemetry(self.episode)
-        for column, value in [("temp_c", 151.0), ("power_w", -1.0),
+        validate_telemetry(self.episode) ## comprueba que el episodi ooriginal paa la validación
+        for column, value in [("temp_c", 151.0), ("power_w", -1.0), ## se crea un caso con datos deliberados
                               ("ecc_errors", -1), ("estado", "desconocido"),
                               ("util_pct", np.nan), ("clock_mhz", np.inf)]:
-            with self.subTest(column=column):
+            with self.subTest(column=column): ## copia el eposidio y cambia una celda a proposito
                 broken = self.episode.copy()
                 broken.loc[0, column] = value
-                with self.assertRaises(pa.errors.SchemaErrors):
+                with self.assertRaises(pa.errors.SchemaErrors): ## se evaluasi detecta el error
                     validate_telemetry(broken)
 
-    def test_windows_do_not_mix_episodes(self):
+    def test_windows_do_not_mix_episodes(self): ## crea ventanas sin que se mezclen episodios
         data = self.data[self.data.episodio_id.isin([0, 12])]
-        windows, labels, groups = make_windows(data.sample(frac=1, random_state=42))
+        windows, labels, groups = make_windows(data.sample(frac=1, random_state=42))## desodenamos a proposito para validar la reorganización 
         self.assertEqual(len(windows), 20)
-        for window, label, group in zip(windows, labels, groups):
+        for window, label, group in zip(windows, labels, groups): ## valida las caracteristicas de la data
             self.assertEqual(len(window), 30)
             self.assertEqual(list(window.columns), list(SIGNALS))
             self.assertEqual(label, data[data.episodio_id == group].estado.iloc[0])
